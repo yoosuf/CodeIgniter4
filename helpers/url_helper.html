@@ -130,6 +130,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../libraries/sessions.html">Session Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uploaded_files.html">Working with Uploaded Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uri.html">Working with URIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/validation.html">Validation</a></li>
 </ul>
 </li>
 </ul>
@@ -289,6 +290,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../libraries/sessions.html">Session Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uploaded_files.html">Working with Uploaded Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uri.html">Working with URIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/validation.html">Validation</a></li>
 </ul>
 </li>
 </ul>
@@ -485,7 +487,7 @@ string to a file, such as an image or stylesheet. For example:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>$returnObject</strong> (<em>boolean</em>) &#8211; True if you would like an object returned, instead of a string.</li>
+<li><strong>$returnObject</strong> (<em>boolean</em>) &#8211; True if you would like a URI instance returned, instead of a string.</li>
 </ul>
 </td>
 </tr>
@@ -504,6 +506,33 @@ viewed.</p>
 <p>Calling this function is the same as doing this:</p>
 <p class="last">base_url(uri_string());</p>
 </div>
+</dd></dl>
+
+<dl class="function">
+<dt id="previous_url">
+<tt class="descname">previous_url</tt><big>(</big><span class="optional">[</span><em>$returnObject = false</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#previous_url" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>$returnObject</strong> (<em>boolean</em>) &#8211; True if you would like a URI instance returned instead of a string.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The URL the user was previously on</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">string|URI</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns the full URL (including segments) of the page the user was previously on.</p>
+<p>Due to security issues of blindly trusting the HTTP_REFERER system variable, CodeIgniter will
+store previously visited pages in the session if it&#8217;s available. This ensures that we always
+use a known and trusted source. If the session hasn&#8217;t been loaded, or is otherwise unavailable,
+then a sanitized version of HTTP_REFERER will be used.</p>
 </dd></dl>
 
 <dl class="function">
@@ -901,7 +930,7 @@ is missing from a URL.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-       Last updated on Sep 18, 2016.
+       Last updated on Sep 22, 2016.
     </p>
   </div>
 
