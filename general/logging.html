@@ -130,6 +130,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../libraries/sessions.html">Session Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uploaded_files.html">Working with Uploaded Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uri.html">Working with URIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/validation.html">Validation</a></li>
 </ul>
 </li>
 </ul>
@@ -289,6 +290,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../libraries/sessions.html">Session Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uploaded_files.html">Working with Uploaded Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uri.html">Working with URIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/validation.html">Validation</a></li>
 </ul>
 </li>
 </ul>
@@ -516,8 +518,8 @@ file name and line number.  You must still provide the exception placeholder in 
 <tt class="docutils literal"><span class="pre">Psr\Log\LoggerInterface</span></tt> and is <a class="reference external" href="http://www.php-fig.org/psr/psr-3/">PSR3</a> compatible. This means
 that you can easily drop in use for any PSR3-compatible logger, or create your own.</p>
 <p>You must ensure that the third-party logger can be found by the system, by adding it to either
-the <tt class="docutils literal"><span class="pre">/application/config/autoload.php</span></tt> configuration file, or through another autoloader,
-like Composer. Next, you should modify <tt class="docutils literal"><span class="pre">/application/config/services.php</span></tt> to point the <tt class="docutils literal"><span class="pre">logger</span></tt>
+the <tt class="docutils literal"><span class="pre">/application/Config/Autoload.php</span></tt> configuration file, or through another autoloader,
+like Composer. Next, you should modify <tt class="docutils literal"><span class="pre">/application/Config/Services.php</span></tt> to point the <tt class="docutils literal"><span class="pre">logger</span></tt>
 alias to your new class name.</p>
 <p>Now, any call that is done through the <tt class="docutils literal"><span class="pre">log_message()</span></tt> function will use your library instead.</p>
 </div>
@@ -549,7 +551,7 @@ still be able to log as it would expect, as long as it can find a PSR3 compatibl
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-       Last updated on Sep 11, 2016.
+       Last updated on Sep 22, 2016.
     </p>
   </div>
 
