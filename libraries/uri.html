@@ -32,7 +32,7 @@
   
     <link rel="top" title="CodeIgniter4 4.0.0-dev documentation" href="../index.html"/>
         <link rel="up" title="Library Reference" href="index.html"/>
-        <link rel="next" title="Database Reference" href="../database/index.html"/>
+        <link rel="next" title="Validation" href="validation.html"/>
         <link rel="prev" title="Working with Uploaded Files" href="uploaded_files.html"/> 
 
   
@@ -59,10 +59,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../installation/downloads.html">Downloading CodeIgniter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/index.html">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/upgrading.html">Upgrading From a Previous Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/local_server.html">Local Development Server</a></li>
 </ul>
 </li>
 </ul>
@@ -128,8 +125,10 @@
 <li class="toctree-l2"><a class="reference internal" href="response.html">HTTP Responses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html">Security Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sessions.html">Session Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="throttler.html">Throttler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uploaded_files.html">Working with Uploaded Files</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Working with URIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">Validation</a></li>
 </ul>
 </li>
 </ul>
@@ -154,7 +153,12 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/cookie_helper.html">Cookie Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/filesystem_helper.html">Filesystem Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/form_helper.html">Form Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/html_helper.html">HTML Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/inflector_helper.html">Inflector Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/number_helper.html">Number Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/text_helper.html">Text Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/url_helper.html">URL Helper</a></li>
 </ul>
@@ -218,10 +222,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../installation/downloads.html">Downloading CodeIgniter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/index.html">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/upgrading.html">Upgrading From a Previous Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/local_server.html">Local Development Server</a></li>
 </ul>
 </li>
 </ul>
@@ -287,8 +288,10 @@
 <li class="toctree-l2"><a class="reference internal" href="response.html">HTTP Responses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html">Security Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sessions.html">Session Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="throttler.html">Throttler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uploaded_files.html">Working with Uploaded Files</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Working with URIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">Validation</a></li>
 </ul>
 </li>
 </ul>
@@ -313,7 +316,12 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../helpers/index.html">Helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/cookie_helper.html">Cookie Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/filesystem_helper.html">Filesystem Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/form_helper.html">Form Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/html_helper.html">HTML Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/inflector_helper.html">Inflector Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/number_helper.html">Number Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/text_helper.html">Text Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/url_helper.html">URL Helper</a></li>
 </ul>
@@ -620,14 +628,14 @@ what the values of the segments are. The segments start at 1 being the furthest 
 </pre></div>
 </div>
 <p>Finally, you can retrieve an array of all of the segments:</p>
-<div class="highlight-ci"><div class="highlight"><pre>$segments = $request-&gt;uri-&gt;getSegments();
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$segments</span> <span class="o">=</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">uri</span><span class="o">-&gt;</span><span class="na">getSegments</span><span class="p">();</span>
 
-// $segments =
-[
-        0 =&gt; &#39;users,
-        1 =&gt; &#39;15&#39;,
-        2 =&gt; &#39;profile&#39;
-]
+<span class="c1">// $segments =</span>
+<span class="p">[</span>
+        <span class="mi">0</span> <span class="o">=&gt;</span> <span class="s1">&#39;users&#39;</span><span class="p">,</span>
+        <span class="mi">1</span> <span class="o">=&gt;</span> <span class="s1">&#39;15&#39;</span><span class="p">,</span>
+        <span class="mi">2</span> <span class="o">=&gt;</span> <span class="s1">&#39;profile&#39;</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -639,7 +647,7 @@ what the values of the segments are. The segments start at 1 being the furthest 
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../database/index.html" class="btn btn-neutral float-right" title="Database Reference">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="validation.html" class="btn btn-neutral float-right" title="Validation">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="uploaded_files.html" class="btn btn-neutral" title="Working with Uploaded Files"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -652,7 +660,7 @@ what the values of the segments are. The segments start at 1 being the furthest 
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-       Last updated on Sep 11, 2016.
+       Last updated on Nov 27, 2016.
     </p>
   </div>
 

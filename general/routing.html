@@ -59,10 +59,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../installation/downloads.html">Downloading CodeIgniter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/index.html">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/upgrading.html">Upgrading From a Previous Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/local_server.html">Local Development Server</a></li>
 </ul>
 </li>
 </ul>
@@ -128,6 +125,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../libraries/response.html">HTTP Responses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/security.html">Security Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/sessions.html">Session Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/throttler.html">Throttler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uploaded_files.html">Working with Uploaded Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uri.html">Working with URIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/validation.html">Validation</a></li>
@@ -158,6 +156,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../helpers/cookie_helper.html">Cookie Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/filesystem_helper.html">Filesystem Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/form_helper.html">Form Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/html_helper.html">HTML Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/inflector_helper.html">Inflector Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/number_helper.html">Number Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/text_helper.html">Text Helper</a></li>
@@ -223,10 +222,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../installation/downloads.html">Downloading CodeIgniter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/index.html">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/upgrading.html">Upgrading From a Previous Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/local_server.html">Local Development Server</a></li>
 </ul>
 </li>
 </ul>
@@ -292,6 +288,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../libraries/response.html">HTTP Responses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/security.html">Security Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/sessions.html">Session Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/throttler.html">Throttler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uploaded_files.html">Working with Uploaded Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uri.html">Working with URIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/validation.html">Validation</a></li>
@@ -322,6 +319,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../helpers/cookie_helper.html">Cookie Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/filesystem_helper.html">Filesystem Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/form_helper.html">Form Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/html_helper.html">HTML Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/inflector_helper.html">Inflector Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/number_helper.html">Number Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/text_helper.html">Text Helper</a></li>
@@ -755,18 +753,18 @@ be created. Only routes that match one of these methods will be created. The res
 <h2><a class="toc-backref" href="#id20">Global Options</a><a class="headerlink" href="#global-options" title="Permalink to this headline">¶</a></h2>
 <p>All of the methods for creating a route (add, get, post, resources, etc) can take an array of options that
 can modify the generated routes, or further restrict them. The <tt class="docutils literal"><span class="pre">$options</span></tt> array is always the last parameter:</p>
-<div class="highlight-ci"><div class="highlight"><pre>$routes-&gt;add(&#39;from&#39;, &#39;to&#39;, $options);
-$routes-&gt;get(&#39;from&#39;, &#39;to&#39;, $options);
-$routes-&gt;post(&#39;from&#39;, &#39;to&#39;, $options);
-$routes-&gt;put(&#39;from&#39;, &#39;to&#39;, $options);
-$routes-&gt;head(&#39;from&#39;, &#39;to&#39;, $options);
-$routes-&gt;options(&#39;from&#39;, &#39;to&#39;, $options);
-$routes-&gt;delete(&#39;from&#39;, &#39;to&#39;, $options);
-$routes-&gt;patch(&#39;from&#39;, &#39;to&#39;, $options);
-$routes-&gt;match([&#39;get, &#39;put&#39;], &#39;from&#39;, &#39;to&#39;, $options);
-$routes-&gt;resources(&#39;photos&#39;, $options);
-$routes-&gt;map($array, $options);
-$routes-&gt;group(&#39;name&#39;, $options, function());
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">put</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">head</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">patch</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">match</span><span class="p">([</span><span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;put&#39;</span><span class="p">],</span> <span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">resources</span><span class="p">(</span><span class="s1">&#39;photos&#39;</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">map</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="nv">$options</span><span class="p">,</span> <span class="k">function</span><span class="p">());</span>
 </pre></div>
 </div>
 <div class="section" id="assigning-namespace">
@@ -819,10 +817,10 @@ to separate suffixes or www) can potentially lead to false positives.</p>
 value being the number of segments to offset.</p>
 <p>This can be beneficial when developing API&#8217;s with the first URI segment being the version number. It can also
 be used when the first parameter is a language string:</p>
-<div class="highlight-ci"><div class="highlight"><pre>$routes-&gt;get(&#39;users/(:num)&#39;, &#39;users/show/$1&#39;, [&#39;offset&#39; =&gt; 1]);
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;users/(:num)&#39;</span><span class="p">,</span> <span class="s1">&#39;users/show/$1&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;offset&#39;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">]);</span>
 
-// Creates:
-$routes[&#39;users/(:num)&#39;] = &#39;users/show/$2);
+<span class="c1">// Creates:</span>
+<span class="nv">$routes</span><span class="p">[</span><span class="s1">&#39;users/(:num)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;users/show/$2&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
@@ -936,7 +934,7 @@ a valid class/method pair, just like you would show in any route, or a Closure:<
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-       Last updated on Nov 07, 2016.
+       Last updated on Nov 27, 2016.
     </p>
   </div>
 

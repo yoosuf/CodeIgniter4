@@ -32,7 +32,7 @@
   
     <link rel="top" title="CodeIgniter4 4.0.0-dev documentation" href="../index.html"/>
         <link rel="up" title="Helpers" href="index.html"/>
-        <link rel="next" title="Inflector Helper" href="inflector_helper.html"/>
+        <link rel="next" title="HTML Helper" href="html_helper.html"/>
         <link rel="prev" title="Filesystem Helper" href="filesystem_helper.html"/> 
 
   
@@ -59,10 +59,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../installation/downloads.html">Downloading CodeIgniter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/index.html">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/upgrading.html">Upgrading From a Previous Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/local_server.html">Local Development Server</a></li>
 </ul>
 </li>
 </ul>
@@ -128,6 +125,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../libraries/response.html">HTTP Responses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/security.html">Security Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/sessions.html">Session Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/throttler.html">Throttler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uploaded_files.html">Working with Uploaded Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uri.html">Working with URIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/validation.html">Validation</a></li>
@@ -158,6 +156,7 @@
 <li class="toctree-l2"><a class="reference internal" href="cookie_helper.html">Cookie Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filesystem_helper.html">Filesystem Helper</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Form Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="html_helper.html">HTML Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inflector_helper.html">Inflector Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="number_helper.html">Number Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="text_helper.html">Text Helper</a></li>
@@ -223,10 +222,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../installation/downloads.html">Downloading CodeIgniter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/index.html">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/upgrading.html">Upgrading From a Previous Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../installation/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/local_server.html">Local Development Server</a></li>
 </ul>
 </li>
 </ul>
@@ -292,6 +288,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../libraries/response.html">HTTP Responses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/security.html">Security Class</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/sessions.html">Session Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/throttler.html">Throttler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uploaded_files.html">Working with Uploaded Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/uri.html">Working with URIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../libraries/validation.html">Validation</a></li>
@@ -322,6 +319,7 @@
 <li class="toctree-l2"><a class="reference internal" href="cookie_helper.html">Cookie Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filesystem_helper.html">Filesystem Helper</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Form Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="html_helper.html">HTML Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inflector_helper.html">Inflector Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="number_helper.html">Number Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="text_helper.html">Text Helper</a></li>
@@ -380,37 +378,25 @@
           <div role="main" class="document">
             
   <div class="section" id="form-helper">
-<h1><a class="toc-backref" href="#id3">Form Helper</a><a class="headerlink" href="#form-helper" title="Permalink to this headline">¶</a></h1>
+<h1>Form Helper<a class="headerlink" href="#form-helper" title="Permalink to this headline">¶</a></h1>
 <p>The Form Helper file contains functions that assist in working with
 forms.</p>
-<div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#form-helper" id="id3">Form Helper</a><ul>
-<li><a class="reference internal" href="#loading-this-helper" id="id4">Loading this Helper</a></li>
-<li><a class="reference internal" href="#escaping-field-values" id="id5">Escaping field values</a></li>
-<li><a class="reference internal" href="#available-functions" id="id6">Available Functions</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#loading-this-helper" id="id1">Loading this Helper</a></li>
+<li><a class="reference internal" href="#escaping-field-values" id="id2">Escaping field values</a></li>
+<li><a class="reference internal" href="#available-functions" id="id3">Available Functions</a></li>
 </ul>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">local:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
 <div class="custom-index container"></div><div class="section" id="loading-this-helper">
-<h2><a class="toc-backref" href="#id4">Loading this Helper</a><a class="headerlink" href="#loading-this-helper" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id1">Loading this Helper</a><a class="headerlink" href="#loading-this-helper" title="Permalink to this headline">¶</a></h2>
 <p>This helper is loaded using the following code:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span class="nx">helper</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="escaping-field-values">
-<h2><a class="toc-backref" href="#id5">Escaping field values</a><a class="headerlink" href="#escaping-field-values" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id2">Escaping field values</a><a class="headerlink" href="#escaping-field-values" title="Permalink to this headline">¶</a></h2>
 <p>You may need to use HTML and characters such as quotes within your form
 elements. In order to do that safely, you&#8217;ll need to use
 <a class="reference internal" href="../general/common_functions.html"><em>common function</em></a>
@@ -436,7 +422,7 @@ form elements.</p>
 </div>
 </div>
 <div class="section" id="available-functions">
-<h2><a class="toc-backref" href="#id6">Available Functions</a><a class="headerlink" href="#available-functions" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id3">Available Functions</a><a class="headerlink" href="#available-functions" title="Permalink to this headline">¶</a></h2>
 <p>The following functions are available:</p>
 <dl class="function">
 <dt id="form_open">
@@ -622,22 +608,12 @@ name/value string to create one field:</p>
 <dl class="function">
 <dt id="form_input">
 <tt class="descname">form_input</tt><big>(</big><span class="optional">[</span><em>$data = ''</em><span class="optional">[</span>, <em>$value = ''</em><span class="optional">[</span>, <em>$extra = ''</em><span class="optional">[</span>, <em>$type = 'text'</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#form_input" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">param  array   $data:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Field attributes data</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
+<dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>$data</strong> (<em>array</em>) &#8211; Field attributes data</li>
 <li><strong>$value</strong> (<em>string</em>) &#8211; Field value</li>
 <li><strong>$extra</strong> (<em>mixed</em>) &#8211; Extra attributes to be added to the tag either as an array or a literal string</li>
 <li><strong>$type</strong> (<em>string</em>) &#8211; The type of input field. i.e. &#8216;text&#8217;, &#8216;email&#8217;, &#8216;number&#8217;, etc.</li>
@@ -654,50 +630,50 @@ name/value string to create one field:</p>
 </table>
 <p>Lets you generate a standard text input field. You can minimally pass
 the field name and value in the first and second parameter:</p>
-<div class="highlight-ci"><div class="highlight"><pre>        <span class="k">echo</span> <span class="nx">form_input</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;johndoe&#39;</span><span class="p">);</span>
-
-<span class="k">Or</span> <span class="nx">you</span> <span class="nx">can</span> <span class="nx">pass</span> <span class="nx">an</span> <span class="nx">associative</span> <span class="k">array</span> <span class="nx">containing</span> <span class="nx">any</span> <span class="nx">data</span> <span class="nx">you</span> <span class="nx">wish</span> <span class="nx">your</span>
-<span class="nx">form</span> <span class="nx">to</span> <span class="nx">contain</span><span class="o">::</span>
-
-        <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-                <span class="s1">&#39;name&#39;</span>          <span class="o">=&gt;</span> <span class="s1">&#39;username&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;id&#39;</span>            <span class="o">=&gt;</span> <span class="s1">&#39;username&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;value&#39;</span>         <span class="o">=&gt;</span> <span class="s1">&#39;johndoe&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;maxlength&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;100&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;size&#39;</span>          <span class="o">=&gt;</span> <span class="s1">&#39;50&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;style&#39;</span>         <span class="o">=&gt;</span> <span class="s1">&#39;width:50%&#39;</span>
-        <span class="p">);</span>
-
-        <span class="k">echo</span> <span class="nx">form_input</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
-
-        <span class="cm">/*</span>
-<span class="cm">                Would produce:</span>
-
-<span class="cm">                &lt;input type=&quot;text&quot; name=&quot;username&quot; value=&quot;johndoe&quot; id=&quot;username&quot; maxlength=&quot;100&quot; size=&quot;50&quot; style=&quot;width:50%&quot;  /&gt;</span>
-<span class="cm">        */</span>
-
-<span class="k">If</span> <span class="nx">you</span> <span class="nx">would</span> <span class="nx">like</span> <span class="nx">your</span> <span class="nx">form</span> <span class="nx">to</span> <span class="nx">contain</span> <span class="nx">some</span> <span class="nx">additional</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">like</span>
-<span class="nx">JavaScript</span><span class="p">,</span> <span class="nx">you</span> <span class="nx">can</span> <span class="nx">pass</span> <span class="nx">it</span> <span class="k">as</span> <span class="nx">a</span> <span class="nx">string</span> <span class="nx">in</span> <span class="nx">the</span> <span class="nx">third</span> <span class="nx">parameter</span><span class="o">::</span>
-
-        <span class="nv">$js</span> <span class="o">=</span> <span class="s1">&#39;onClick=&quot;some_function()&quot;&#39;</span><span class="p">;</span>
-        <span class="k">echo</span> <span class="nx">form_input</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;johndoe&#39;</span><span class="p">,</span> <span class="nv">$js</span><span class="p">);</span>
-
-<span class="k">Or</span> <span class="nx">you</span> <span class="nx">can</span> <span class="nx">pass</span> <span class="nx">it</span> <span class="k">as</span> <span class="nx">an</span> <span class="k">array</span><span class="o">::</span>
-
-        <span class="nv">$js</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;onClick&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;some_function();&#39;</span><span class="p">);</span>
-        <span class="k">echo</span> <span class="nx">form_input</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;johndoe&#39;</span><span class="p">,</span> <span class="nv">$js</span><span class="p">);</span>
-
-<span class="nx">To</span> <span class="nx">support</span> <span class="nx">the</span> <span class="nx">expanded</span> <span class="nb">range</span> <span class="nx">of</span> <span class="nx">HTML5</span> <span class="nx">input</span> <span class="nx">fields</span><span class="p">,</span> <span class="nx">you</span> <span class="nx">can</span> <span class="nx">pass</span> <span class="nx">an</span> <span class="nx">input</span> <span class="nx">type</span> <span class="nx">in</span> <span class="k">as</span> <span class="nx">the</span> <span class="nx">fourth</span> <span class="nx">parameter</span><span class="o">::</span>
+<div class="highlight-ci"><div class="highlight"><pre><span class="k">echo</span> <span class="nx">form_input</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;johndoe&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>echo form_input(&#8216;email&#8217;, <a class="reference external" href="mailto:'joe&#37;&#52;&#48;example&#46;com">'joe<span>&#64;</span>example<span>&#46;</span>com</a>&#8216;, [&#8216;placeholder&#8217; =&gt; &#8216;Email Address...&#8217;], &#8216;email&#8217;);</p>
-<dl class="docutils">
-<dt>/*</dt>
-<dd><p class="first">Would produce:</p>
-<p class="last">&lt;input type=&#8221;email&#8221; name=&#8221;email&#8221; value=&#8221;<a class="reference external" href="mailto:joe&#37;&#52;&#48;example&#46;com">joe<span>&#64;</span>example<span>&#46;</span>com</a>&#8221; placeholder=&#8221;Email Address...&#8221; /&gt;</p>
-</dd>
-</dl>
-<p><a href="#id1"><span class="problematic" id="id2">*</span></a>/</p>
+<p>Or you can pass an associative array containing any data you wish your
+form to contain:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;name&#39;</span>          <span class="o">=&gt;</span> <span class="s1">&#39;username&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;id&#39;</span>            <span class="o">=&gt;</span> <span class="s1">&#39;username&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;value&#39;</span>         <span class="o">=&gt;</span> <span class="s1">&#39;johndoe&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;maxlength&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;100&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;size&#39;</span>          <span class="o">=&gt;</span> <span class="s1">&#39;50&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;style&#39;</span>         <span class="o">=&gt;</span> <span class="s1">&#39;width:50%&#39;</span>
+<span class="p">);</span>
+
+<span class="k">echo</span> <span class="nx">form_input</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">        Would produce:</span>
+
+<span class="cm">        &lt;input type=&quot;text&quot; name=&quot;username&quot; value=&quot;johndoe&quot; id=&quot;username&quot; maxlength=&quot;100&quot; size=&quot;50&quot; style=&quot;width:50%&quot;  /&gt;</span>
+<span class="cm">*/</span>
+</pre></div>
+</div>
+<p>If you would like your form to contain some additional data, like
+JavaScript, you can pass it as a string in the third parameter:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$js</span> <span class="o">=</span> <span class="s1">&#39;onClick=&quot;some_function()&quot;&#39;</span><span class="p">;</span>
+<span class="k">echo</span> <span class="nx">form_input</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;johndoe&#39;</span><span class="p">,</span> <span class="nv">$js</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Or you can pass it as an array:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$js</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;onClick&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;some_function();&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nx">form_input</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;johndoe&#39;</span><span class="p">,</span> <span class="nv">$js</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To support the expanded range of HTML5 input fields, you can pass an input type in as the fourth parameter:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="k">echo</span> <span class="nx">form_input</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;joe@example.com&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;placeholder&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Email Address...&#39;</span><span class="p">],</span> <span class="s1">&#39;email&#39;</span><span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">         Would produce:</span>
+
+<span class="cm">        &lt;input type=&quot;email&quot; name=&quot;email&quot; value=&quot;joe@example.com&quot; placeholder=&quot;Email Address...&quot; /&gt;</span>
+<span class="cm">*/</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -779,11 +755,11 @@ be used to upload files.</p>
 function above except that it generates a &#8220;textarea&#8221; type.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Instead of the <em>maxlength</em> and <em>size</em> attributes in the above example,</p>
+<p class="last">Instead of the <em>maxlength</em> and <em>size</em> attributes in the above example,
+you will instead specify <em>rows</em> and <em>cols</em>.</p>
 </div>
 </dd></dl>
 
-<p>you will instead specify <em>rows</em> and <em>cols</em>.</p>
 <dl class="function">
 <dt id="form_dropdown">
 <tt class="descname">form_dropdown</tt><big>(</big><span class="optional">[</span><em>$name = ''</em><span class="optional">[</span>, <em>$options = array()</em><span class="optional">[</span>, <em>$selected = array()</em><span class="optional">[</span>, <em>$extra = ''</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#form_dropdown" title="Permalink to this definition">¶</a></dt>
@@ -1290,16 +1266,14 @@ i.e. <a class="reference internal" href="#form_input" title="form_input"><tt cla
 <p>The above form will show &#8220;0&#8221; when loaded for the first time.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you&#8217;ve loaded the <tt class="xref doc docutils literal"><span class="pre">Form</span> <span class="pre">Validation</span> <span class="pre">Library</span></tt> and</p>
+<p class="last">If you&#8217;ve loaded the <tt class="xref doc docutils literal"><span class="pre">Form</span> <span class="pre">Validation</span> <span class="pre">Library</span></tt> and
+have set a validation rule for the field name in use with this helper, then it will
+forward the call to the <tt class="xref doc docutils literal"><span class="pre">Form</span> <span class="pre">Validation</span> <span class="pre">Library</span></tt>&#8216;s
+own <tt class="docutils literal"><span class="pre">set_value()</span></tt> method. Otherwise, this function looks in <tt class="docutils literal"><span class="pre">$_POST</span></tt> for the
+field value.</p>
 </div>
 </dd></dl>
 
-<dl class="docutils">
-<dt>have set a validation rule for the field name in use with this helper, then it will</dt>
-<dd>forward the call to the <tt class="xref doc docutils literal"><span class="pre">Form</span> <span class="pre">Validation</span> <span class="pre">Library</span></tt>&#8216;s
-own <tt class="docutils literal"><span class="pre">set_value()</span></tt> method. Otherwise, this function looks in <tt class="docutils literal"><span class="pre">$_POST</span></tt> for the
-field value.</dd>
-</dl>
 <dl class="function">
 <dt id="set_select">
 <tt class="descname">set_select</tt><big>(</big><em>$field</em><span class="optional">[</span>, <em>$value = ''</em><span class="optional">[</span>, <em>$default = FALSE</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#set_select" title="Permalink to this definition">¶</a></dt>
@@ -1490,7 +1464,7 @@ around each of the messages.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="inflector_helper.html" class="btn btn-neutral float-right" title="Inflector Helper">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="html_helper.html" class="btn btn-neutral float-right" title="HTML Helper">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="filesystem_helper.html" class="btn btn-neutral" title="Filesystem Helper"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -1503,7 +1477,7 @@ around each of the messages.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-       Last updated on Nov 07, 2016.
+       Last updated on Nov 27, 2016.
     </p>
   </div>
 
