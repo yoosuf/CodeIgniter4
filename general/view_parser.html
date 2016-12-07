@@ -336,7 +336,544 @@
             
   <div class="section" id="view-parser">
 <h1>View Parser<a class="headerlink" href="#view-parser" title="Permalink to this headline">¶</a></h1>
-<p>Coming soon :)</p>
+<p>The View Parser can perform simple text substitution for
+pseudo-variables contained within your view files.
+It can parse simple variables or variable tag pairs.</p>
+<p>Pseudo-variable names or control constructs are enclosed in braces, like this:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="nx">title</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">blog_title</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">title</span><span class="o">&gt;</span>
+        <span class="o">&lt;/</span><span class="nx">head</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="nx">h3</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">blog_heading</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">h3</span><span class="o">&gt;</span>
+
+        <span class="p">{</span><span class="nx">blog_entries</span><span class="p">}</span>
+                <span class="o">&lt;</span><span class="nx">h5</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">title</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">h5</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">body</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+        <span class="p">{</span><span class="o">/</span><span class="nx">blog_entries</span><span class="p">}</span>
+
+        <span class="o">&lt;/</span><span class="nx">body</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">html</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>These variables are not actual PHP variables, but rather plain text
+representations that allow you to eliminate PHP from your templates
+(view files).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">CodeIgniter does <strong>not</strong> require you to use this class since
+using pure PHP in your view pages (for instance using the
+<a class="reference internal" href="view_renderer.html"><em>View renderer</em></a> )
+lets them run a little faster.
+However, some developers prefer to use some form of template engine if
+they work with designers who they feel would find some
+confusion working with PHP.</p>
+</div>
+<div class="section" id="using-the-view-parser-class">
+<h2>Using the View Parser Class<a class="headerlink" href="#using-the-view-parser-class" title="Permalink to this headline">¶</a></h2>
+<p>If you have the <tt class="docutils literal"><span class="pre">Parser</span></tt> as your default renderer, then the parsing will occur
+transparently. If you want to work with it more directly, you can access the
+Parser service directly:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$parser</span> <span class="o">=</span> <span class="nx">\Config\Services</span><span class="o">::</span><span class="na">renderer</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Alternately, if you are not using the <tt class="docutils literal"><span class="pre">Parser</span></tt> class as your default renderer, you
+can instantiate it directly:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$parser</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\CodeIgniter\View\Parser</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Then you can use any of the three standard rendering methods that it provides:
+<strong>render(viewpath, options, save)</strong>, <strong>setVar(name, value, context)</strong> and
+<strong>setData(data, context)</strong>. You will also be able to specify delimiters directly,
+through the <strong>setDelimiters(left,right)</strong> method.</p>
+<p>Using the <tt class="docutils literal"><span class="pre">Parser</span></tt>, your view templates are processed only by the Parser
+itself, and not like a conventional view PHP script. PHP code in such a script
+is ignored by the parser, and only substitutions are performed.</p>
+<p>This is purposeful: view files with no PHP.</p>
+<div class="section" id="what-it-does">
+<h3>What It Does<a class="headerlink" href="#what-it-does" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">Parser</span></tt> class processes &#8220;PHP/HTML scripts&#8221; stored in the application&#8217;s view path.
+These scripts have a <tt class="docutils literal"><span class="pre">.php</span></tt> extension, but should not contain any PHP.</p>
+<p>Each view parameter (which we refer to as a pseudo-variable) triggers a substitution,
+based on the type of value you provided for it. Pseudo-variables are not
+extracted into PHP variables; instead their value is accessed through the pseudo-variable
+syntax, where its name is referenced inside braces.
+This means that your view parameter names need not be legal PHP variable names.</p>
+<p>The Parser class uses an associative array internally, to accumulate pseudo-variable
+settings until you call its <tt class="docutils literal"><span class="pre">render()</span></tt>. This means that your pseudo-variable names
+need to be unique, or a later parameter setting will over-ride an earlier one.</p>
+<p>This also impacts escaping parameter values for different contexts inside your
+script. You will have to give each escaped value a unique parameter name.</p>
+</div>
+<div class="section" id="parser-templates">
+<h3>Parser templates<a class="headerlink" href="#parser-templates" title="Permalink to this headline">¶</a></h3>
+<p>You can use the <tt class="docutils literal"><span class="pre">render()</span></tt> method to parse (or render) simple templates,
+like this:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;blog_title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;My Blog Title&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;blog_heading&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;My Blog Heading&#39;</span>
+<span class="p">);</span>
+
+<span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;blog_template&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>View parameters are passed to <tt class="docutils literal"><span class="pre">setData()</span></tt> as an associative
+array of data to be replaced in the template. In the above example, the
+template would contain two variables: {blog_title} and {blog_heading}
+The first parameter to <tt class="docutils literal"><span class="pre">render()</span></tt> contains the name of the <a class="reference internal" href="views.html"><em>view
+file</em></a> (in this example the file would be called
+blog_template.php),</p>
+</div>
+<div class="section" id="parser-configuration-options">
+<h3>Parser Configuration Options<a class="headerlink" href="#parser-configuration-options" title="Permalink to this headline">¶</a></h3>
+<p>Several options can be passed to the <tt class="docutils literal"><span class="pre">render()</span></tt> or <tt class="docutils literal"><span class="pre">renderString()</span></tt> methods.</p>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">cache</span></tt> - the time in seconds, to save a view&#8217;s results; ignored for renderString()</p>
+</li>
+<li><dl class="first docutils">
+<dt><tt class="docutils literal"><span class="pre">cache_name</span></tt> - the ID used to save/retrieve a cached view result; defaults to the viewpath;</dt>
+<dd><p class="first last">ignored for renderString()</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><tt class="docutils literal"><span class="pre">saveData</span></tt> - true if the view data parameters should be retained for subsequent calls;</dt>
+<dd><p class="first last">default is <strong>false</strong></p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><tt class="docutils literal"><span class="pre">cascadeData</span></tt> - true if pseudo-variable settings should be passed on to nested</dt>
+<dd><p class="first last">substitutions; default is <strong>true</strong></p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="substitution-variations">
+<h2>Substitution Variations<a class="headerlink" href="#substitution-variations" title="Permalink to this headline">¶</a></h2>
+<p>There are three types of substitution supported: simple, looping, and nested.
+Substitutions are performed in the same sequence that
+pseudo-variables were added.</p>
+<p>The <strong>simple substitution</strong> performed by the parser is a one-to-one
+replacement of pseudo-variables where the corresponding data parameter
+has either a scalar or string value, as in this example:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$template</span> <span class="o">=</span> <span class="s1">&#39;&lt;head&gt;&lt;title&gt;{blog_title}&lt;/title&gt;&lt;/head&gt;&#39;</span><span class="p">;</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;blog_title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;My ramblings&#39;</span><span class="p">];</span>
+
+<span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">renderString</span><span class="p">(</span><span class="nv">$template</span><span class="p">);</span>
+
+<span class="c1">// Result: &lt;head&gt;&lt;title&gt;My ramblings&lt;/title&gt;&lt;/head&gt;</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">Parser</span></tt> takes substitution a lot further with &#8220;variable pairs&#8221;,
+used for nested substitutions or looping, and with some advanced
+constructs for conditional substitution.</p>
+<p>When the parser executes, it will generally</p>
+<ul class="simple">
+<li>handle any conditional substitutions</li>
+<li>handle any nested/looping substutions</li>
+<li>handle the remaining single substitutions</li>
+</ul>
+<div class="section" id="loop-substitutions">
+<h3>Loop Substitutions<a class="headerlink" href="#loop-substitutions" title="Permalink to this headline">¶</a></h3>
+<p>A loop substitution happens when the value for a pseudo-variable is
+a sequential array of arrays, like an array of row settings.</p>
+<p>The above example code allows simple variables to be replaced. What if
+you would like an entire block of variables to be repeated, with each
+iteration containing new values? Consider the template example we showed
+at the top of the page:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">head</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="nx">title</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">blog_title</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">title</span><span class="o">&gt;</span>
+        <span class="o">&lt;/</span><span class="nx">head</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="nx">h3</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">blog_heading</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">h3</span><span class="o">&gt;</span>
+
+        <span class="p">{</span><span class="nx">blog_entries</span><span class="p">}</span>
+                <span class="o">&lt;</span><span class="nx">h5</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">title</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">h5</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">body</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+        <span class="p">{</span><span class="o">/</span><span class="nx">blog_entries</span><span class="p">}</span>
+
+        <span class="o">&lt;/</span><span class="nx">body</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">html</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>In the above code you&#8217;ll notice a pair of variables: {blog_entries}
+data... {/blog_entries}. In a case like this, the entire chunk of data
+between these pairs would be repeated multiple times, corresponding to
+the number of rows in the &#8220;blog_entries&#8221; element of the parameters array.</p>
+<p>Parsing variable pairs is done using the identical code shown above to
+parse single variables, except, you will add a multi-dimensional array
+corresponding to your variable pair data. Consider this example:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;blog_title&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;My Blog Title&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;blog_heading&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;My Blog Heading&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;blog_entries&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Title 1&#39;</span><span class="p">,</span> <span class="s1">&#39;body&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Body 1&#39;</span><span class="p">),</span>
+                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Title 2&#39;</span><span class="p">,</span> <span class="s1">&#39;body&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Body 2&#39;</span><span class="p">),</span>
+                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Title 3&#39;</span><span class="p">,</span> <span class="s1">&#39;body&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Body 3&#39;</span><span class="p">),</span>
+                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Title 4&#39;</span><span class="p">,</span> <span class="s1">&#39;body&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Body 4&#39;</span><span class="p">),</span>
+                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Title 5&#39;</span><span class="p">,</span> <span class="s1">&#39;body&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Body 5&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;blog_template&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The value for the pseudo-variable <tt class="docutils literal"><span class="pre">blog_entries</span></tt> is a sequential
+array of associative arrays. The outer level does not have keys associated
+with each of the nested &#8220;rows&#8221;.</p>
+<p>If your &#8220;pair&#8221; data is coming from a database result, which is already a
+multi-dimensional array, you can simply use the database <tt class="docutils literal"><span class="pre">getResultArray()</span></tt>
+method:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$query</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM blog&quot;</span><span class="p">);</span>
+
+<span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;blog_title&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;My Blog Title&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;blog_heading&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;My Blog Heading&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;blog_entries&#39;</span> <span class="o">=&gt;</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">getResultArray</span><span class="p">()</span>
+<span class="p">);</span>
+
+<span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;blog_template&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="nested-substitutions">
+<h3>Nested Substitutions<a class="headerlink" href="#nested-substitutions" title="Permalink to this headline">¶</a></h3>
+<p>A nested substitution happens when the value for a pseudo-variable is
+an associative array of values, like a record from a database:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;blog_title&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;My Blog Title&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;blog_heading&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;My Blog Heading&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;blog_entry&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Title 1&#39;</span><span class="p">,</span> <span class="s1">&#39;body&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Body 1&#39;</span>
+        <span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;blog_template&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The value for the pseudo-variable <tt class="docutils literal"><span class="pre">blog_entry</span></tt> is an associative
+array. The key/value pairs defined inside it will be exposed inside
+the variable pair loop for that variable.</p>
+<p>A <tt class="docutils literal"><span class="pre">blog_template</span></tt> that might work for the above:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">blog_title</span><span class="p">}</span> <span class="o">-</span> <span class="p">{</span><span class="nx">blog_heading</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">h1</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="nx">blog_entry</span><span class="p">}</span>
+        <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">title</span><span class="p">}</span><span class="o">&lt;/</span><span class="nx">h2</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">body</span><span class="p">}{</span><span class="o">/</span><span class="nx">p</span><span class="p">}</span>
+        <span class="o">&lt;/</span><span class="nx">div</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="o">/</span><span class="nx">blog_entry</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If you would like the other pseudo-variables accessible inside the &#8220;blog_entry&#8221;
+scope, then make sure that the &#8220;cascadeData&#8221; option is set to true.</p>
+</div>
+<div class="section" id="cascading-data">
+<h3>Cascading Data<a class="headerlink" href="#cascading-data" title="Permalink to this headline">¶</a></h3>
+<p>With both a nested and a loop substitution, you have the option of cascading
+data pairs into the inner substitution.</p>
+<p>The following example is not impacted by cascading:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$template</span> <span class="o">=</span> <span class="s1">&#39;{name} lives in {location}{city} on {planet}{/location}.&#39;</span><span class="p">;</span>
+
+<span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;George&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;location&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span> <span class="s1">&#39;city&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Red City&#39;</span><span class="p">,</span> <span class="s1">&#39;planet&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Mars&#39;</span> <span class="p">]</span> <span class="p">];</span>
+
+<span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">renderString</span><span class="p">(</span><span class="nv">$template</span><span class="p">);</span>
+<span class="c1">// Result: George lives in Red City on Mars.</span>
+</pre></div>
+</div>
+<p>This example gives different results, depending on cascading:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$template</span> <span class="o">=</span> <span class="s1">&#39;{location}{name} lives in {city} on {planet}{/location}.&#39;</span><span class="p">;</span>
+
+<span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;George&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;location&#39;</span> <span class="o">=&gt;</span> <span class="p">[</span> <span class="s1">&#39;city&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Red City&#39;</span><span class="p">,</span> <span class="s1">&#39;planet&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Mars&#39;</span> <span class="p">]</span> <span class="p">];</span>
+
+<span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">renderString</span><span class="p">(</span><span class="nv">$template</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;cascadeData&#39;</span><span class="o">=&gt;</span><span class="k">false</span><span class="p">]);</span>
+<span class="c1">// Result: {name} lives in Red City on Mars.</span>
+
+<span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">renderString</span><span class="p">(</span><span class="nv">$template</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;cascadeData&#39;</span><span class="o">=&gt;</span><span class="k">true</span><span class="p">]);</span>
+<span class="c1">// Result: George lives in Red City on Mars.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="usage-notes">
+<h2>Usage Notes<a class="headerlink" href="#usage-notes" title="Permalink to this headline">¶</a></h2>
+<p>If you include substitution parameters that are not referenced in your
+template, they are ignored:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$template</span> <span class="o">=</span> <span class="s1">&#39;Hello, {firstname} {lastname}&#39;</span><span class="p">;</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Mr&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;firstname&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;John&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lastname&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Doe&#39;</span>
+<span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">renderString</span><span class="p">(</span><span class="nv">$template</span><span class="p">);</span>
+
+<span class="c1">// Result: Hello, John Doe</span>
+</pre></div>
+</div>
+<p>If you do not include a substitution parameter that is referenced in your
+template, the original pseudo-variable is shown in the result:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$template</span> <span class="o">=</span> <span class="s1">&#39;Hello, {firstname} {initials} {lastname}&#39;</span><span class="p">;</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Mr&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;firstname&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;John&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lastname&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Doe&#39;</span>
+<span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">renderString</span><span class="p">(</span><span class="nv">$template</span><span class="p">);</span>
+
+<span class="c1">// Result: Hello, John {initials} Doe</span>
+</pre></div>
+</div>
+<p>If you provide a string substitution parameter when an array is expected,
+i.e. for a variable pair, the substitution is done for the opening variable
+pair tag, but the closing variable pair tag is not rendered properly:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$template</span> <span class="o">=</span> <span class="s1">&#39;Hello, {firstname} {lastname} ({degrees}{degree} {/degrees})&#39;</span><span class="p">;</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;degrees&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Mr&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;firstname&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;John&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lastname&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Doe&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;titles&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;degree&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;BSc&#39;</span><span class="p">),</span>
+                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;degree&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;PhD&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+<span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">renderString</span><span class="p">(</span><span class="nv">$template</span><span class="p">);</span>
+
+<span class="c1">// Result: Hello, John Doe (Mr{degree} {/degrees})</span>
+</pre></div>
+</div>
+<div class="section" id="view-fragments">
+<h3>View Fragments<a class="headerlink" href="#view-fragments" title="Permalink to this headline">¶</a></h3>
+<p>You do not have to use variable pairs to get the effect of iteration in
+your views. It is possible to use a view fragment for what would be inside
+a variable pair, and to control the iteration in your controller instead
+of in the view.</p>
+<p>An example with the iteration controlled in the view:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$template</span> <span class="o">=</span> <span class="s1">&#39;&lt;ul&gt;{menuitems}</span>
+<span class="s1">        &lt;li&gt;&lt;a href=&quot;{link}&quot;&gt;{title}&lt;/a&gt;&lt;/li&gt;</span>
+<span class="s1">{/menuitems}&lt;/ul&gt;&#39;</span><span class="p">;</span>
+
+<span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;menuitems&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;First Link&#39;</span><span class="p">,</span> <span class="s1">&#39;link&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/first&#39;</span><span class="p">),</span>
+                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Second Link&#39;</span><span class="p">,</span> <span class="s1">&#39;link&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/second&#39;</span><span class="p">),</span>
+        <span class="p">)</span>
+<span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">renderString</span><span class="p">(</span><span class="nv">$template</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Result:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;/first&quot;</span><span class="o">&gt;</span><span class="nx">First</span> <span class="nx">Link</span><span class="o">&lt;/</span><span class="nx">a</span><span class="o">&gt;&lt;/</span><span class="nx">li</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;/second&quot;</span><span class="o">&gt;</span><span class="nx">Second</span> <span class="nx">Link</span><span class="o">&lt;/</span><span class="nx">a</span><span class="o">&gt;&lt;/</span><span class="nx">li</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">ul</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>An example with the iteration controlled in the controller,
+using a view fragment:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$temp</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="nv">$template1</span> <span class="o">=</span> <span class="s1">&#39;&lt;li&gt;&lt;a href=&quot;{link}&quot;&gt;{title}&lt;/a&gt;&lt;/li&gt;&#39;</span><span class="p">;</span>
+<span class="nv">$data1</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="k">array</span><span class="p">(</span><span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;First Link&#39;</span><span class="p">,</span> <span class="s1">&#39;link&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/first&#39;</span><span class="p">),</span>
+        <span class="k">array</span><span class="p">(</span><span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Second Link&#39;</span><span class="p">,</span> <span class="s1">&#39;link&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/second&#39;</span><span class="p">),</span>
+<span class="p">);</span>
+
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$data1</span> <span class="k">as</span> <span class="nv">$menuitem</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="nv">$temp</span> <span class="o">.=</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">(</span><span class="nv">$menuItem</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">renderString</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="nv">$template</span> <span class="o">=</span> <span class="s1">&#39;&lt;ul&gt;{menuitems}&lt;/ul&gt;&#39;</span><span class="p">;</span>
+<span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;menuitems&#39;</span> <span class="o">=&gt;</span> <span class="nv">$temp</span>
+<span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">renderString</span><span class="p">(</span><span class="nv">$template</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Result:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;/first&quot;</span><span class="o">&gt;</span><span class="nx">First</span> <span class="nx">Link</span><span class="o">&lt;/</span><span class="nx">a</span><span class="o">&gt;&lt;/</span><span class="nx">li</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;/second&quot;</span><span class="o">&gt;</span><span class="nx">Second</span> <span class="nx">Link</span><span class="o">&lt;/</span><span class="nx">a</span><span class="o">&gt;&lt;/</span><span class="nx">li</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">ul</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="class-reference">
+<h2>Class Reference<a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt>
+<tt class="descname">CodeIgniter\View\Parser</tt></dt>
+<dd><dl class="method">
+<dt>
+<tt class="descname">render($view[, $options[, $saveData=false]]])</tt></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>$view</strong> (<em>string</em>) &#8211; File name of the view source</li>
+<li><strong>$options</strong> (<em>array</em>) &#8211; Array of options, as key/value pairs</li>
+<li><strong>$saveData</strong> (<em>boolean</em>) &#8211; If true, will save data for use with any other calls, if false, will clean the data after rendering the view.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The rendered text for the chosen view</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">string</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Builds the output based upon a file name and any data that has already been set:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;myview&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Options supported:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">cache</span></tt> - the time in seconds, to save a view&#8217;s results</li>
+<li><tt class="docutils literal"><span class="pre">cache_name</span></tt> - the ID used to save/retrieve a cached view result; defaults to the viewpath</li>
+<li><tt class="docutils literal"><span class="pre">cascadeData</span></tt> - true if the data pairs in effect when a nested or loop substitution occurs should be propagated</li>
+<li><tt class="docutils literal"><span class="pre">saveData</span></tt> - true if the view data parameter should be retained for subsequent calls</li>
+<li><tt class="docutils literal"><span class="pre">leftDelimiter</span></tt> - the left delimiter to use in pseudo-variable syntax</li>
+<li><tt class="docutils literal"><span class="pre">rightDelimiter</span></tt> - the right delimiter to use in pseudo-variable syntax</li>
+</ul>
+<p>Any conditional substitutions are performed first, then remaining
+substitutions are performed for each data pair.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">renderString($template[, $options[, $saveData=false]]])</tt></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>$template</strong> (<em>string</em>) &#8211; View source provided as a string</li>
+<li><strong>$options</strong> (<em>array</em>) &#8211; Array of options, as key/value pairs</li>
+<li><strong>$saveData</strong> (<em>boolean</em>) &#8211; If true, will save data for use with any other calls, if false, will clean the data after rendering the view.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The rendered text for the chosen view</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">string</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Builds the output based upon a provided template source and any data that has already been set:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="k">echo</span> <span class="nv">$parser</span><span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;myview&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Options supported, and behavior, as above.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="setData">
+<tt class="descname">setData</tt><big>(</big><span class="optional">[</span><em>$data</em><span class="optional">[</span>, <em>$context=null</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#setData" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>$data</strong> (<em>array</em>) &#8211; Array of view data strings, as key/value pairs</li>
+<li><strong>$context</strong> (<em>string</em>) &#8211; The context to use for data escaping.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The Renderer, for method chaining</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">CodeIgniter\View\RendererInterface.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Sets several pieces of view data at once:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$renderer</span><span class="o">-&gt;</span><span class="na">setData</span><span class="p">([</span><span class="s1">&#39;name&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;George&#39;</span><span class="p">,</span> <span class="s1">&#39;position&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Boss&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+<p>Supported escape contexts: html, css, js, url, or attr or raw.
+If &#8216;raw&#8217;, no escaping will happen.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="setVar">
+<tt class="descname">setVar</tt><big>(</big><em>$name</em><span class="optional">[</span>, <em>$value=null</em><span class="optional">[</span>, <em>$context=null</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#setVar" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>$name</strong> (<em>string</em>) &#8211; Name of the view data variable</li>
+<li><strong>$value</strong> (<em>mixed</em>) &#8211; The value of this view data</li>
+<li><strong>$context</strong> (<em>string</em>) &#8211; The context to use for data escaping.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The Renderer, for method chaining</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">CodeIgniter\View\RendererInterface.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Sets a single piece of view data:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$renderer</span><span class="o">-&gt;</span><span class="na">setVar</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="s1">&#39;Joe&#39;</span><span class="p">,</span><span class="s1">&#39;html&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Supported escape contexts: html, css, js, url, attr or raw.
+If &#8216;raw&#8217;, no escaping will happen.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="setDelimiters">
+<tt class="descname">setDelimiters</tt><big>(</big><em>$leftDelimiter = '{'</em>, <em>$rightDelimiter = '}'</em><big>)</big><a class="headerlink" href="#setDelimiters" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>$leftDelimiter</strong> (<em>string</em>) &#8211; Left delimiter for substitution fields</li>
+<li><strong>$rightDelimiter</strong> (<em>string</em>) &#8211; right delimiter for substitution fields</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The Renderer, for method chaining</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">CodeIgniter\View\RendererInterface.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Over-ride the substitution field delimiters:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$renderer</span><span class="o">-&gt;</span><span class="na">setDelimiters</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="s1">&#39;]&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -349,7 +886,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-       Last updated on Dec 04, 2016.
+       Last updated on Dec 07, 2016.
     </p>
   </div>
 
