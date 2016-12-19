@@ -433,7 +433,7 @@ the error handler to function as normal, you can throw a new exception within th
 <span class="p">{</span>
         <span class="c1">// do something here...</span>
 
-        <span class="k">throw</span> <span class="k">new</span> <span class="nx">\RuntimeException</span><span class="p">(</span><span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">(),</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getCode</span><span class="p">());</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nx">\RuntimeException</span><span class="p">(</span><span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">(),</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getCode</span><span class="p">(),</span> <span class="nv">$e</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -513,7 +513,7 @@ or when it is temporarily lost:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span class="k">throw</span> <span class="k">new</span> <span class="nx">\CodeIgniter\DatabaseException</span><span class="p">();</span>
 </pre></div>
 </div>
-<p>This provides an HTTP status code of 500, and an exit code of 4.</p>
+<p>This provides an HTTP status code of 500, and an exit code of 8.</p>
 </div>
 </div>
 </div>
@@ -537,7 +537,7 @@ or when it is temporarily lost:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-       Last updated on Dec 14, 2016.
+       Last updated on Dec 19, 2016.
     </p>
   </div>
 
