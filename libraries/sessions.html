@@ -676,7 +676,9 @@ through <tt class="docutils literal"><span class="pre">$_SESSION</span></tt>:</p
 </div>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">The <tt class="docutils literal"><span class="pre">get()</span></tt> method WILL return flashdata items.</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">get()</span></tt> method WILL return flashdata items when
+retrieving a single item by key. It will not return flashdata when
+grabbing all userdata from the session, however.</p>
 </div>
 <p>However, if you want to be sure that you&#8217;re reading &#8220;flashdata&#8221; (and not
 any other kind), you can also use the <tt class="docutils literal"><span class="pre">getFlashdata()</span></tt> method:</p>
@@ -752,7 +754,9 @@ time-to-live value of 300 seconds (or 5 minutes) will be used.</p>
 </div>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">The <tt class="docutils literal"><span class="pre">get()</span></tt> method will NOT return tempdata items.</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">get()</span></tt> method WILL return tempdata items when
+retrieving a single item by key. It will not return tempdata when
+grabbing all userdata from the session, however.</p>
 </div>
 <p>Or if you want to be sure that you&#8217;re reading &#8220;tempdata&#8221; (and not any
 other kind), you can also use the <tt class="docutils literal"><span class="pre">getTempdata()</span></tt> method:</p>
@@ -1169,7 +1173,7 @@ separate the multiple server paths with commas:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-       Last updated on Dec 14, 2016.
+       Last updated on Dec 26, 2016.
     </p>
   </div>
 
