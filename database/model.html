@@ -514,7 +514,7 @@ method.</p>
 <p><strong>$useSoftDeletes</strong></p>
 <p>If true, then any delete* method calls will simply set a flag in the database, instead of
 actually deleting the row. This can preserve data when it might be referenced elsewhere, or
-can maintain a &#8220;recylce bin&#8221; of objects that can be restored, or even simply preserve it as
+can maintain a &#8220;recycle bin&#8221; of objects that can be restored, or even simply preserve it as
 part of a security trail. If true, the find* methods will only return non-deleted rows, unless
 the withDeleted() method is called prior to calling the find* method.</p>
 <p>This requires an INT or TINYINT field named <tt class="docutils literal"><span class="pre">deleted</span></tt> to be present in the table.</p>
@@ -577,9 +577,10 @@ all rows that match:</p>
 </pre></div>
 </div>
 <p><strong>findAll()</strong></p>
-<p>Returns all results.</p>
-<blockquote>
-<div>$users = $userModel-&gt;findAll();</div></blockquote>
+<p>Returns all results:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$users</span> <span class="o">=</span> <span class="nv">$userModel</span><span class="o">-&gt;</span><span class="na">findAll</span><span class="p">();</span>
+</pre></div>
+</div>
 <p>This query may be modified by interjecting Query Builder commands as needed prior to calling this method:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span class="nv">$users</span> <span class="o">=</span> <span class="nv">$userModel</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                    <span class="o">-&gt;</span><span class="na">findAll</span><span class="p">();</span>
@@ -937,7 +938,7 @@ common in many circles to represent the encoding of an ID into a short, unique, 
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-       Last updated on Dec 14, 2016.
+       Last updated on Dec 27, 2016.
     </p>
   </div>
 

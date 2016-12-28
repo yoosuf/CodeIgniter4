@@ -411,7 +411,7 @@ running, this might be a time-consuming and error-prone way to handle this. That
 come in handy.</p>
 <p>Instead of creating the instance ourself, we let a central class create an instance of the
 class for us. This class is kept very simple. It only contains a method for each class that we want
-to use as a service. The method typically returns a new instance of that class, passing any dependencies
+to use as a service. The method typically returns a shared instance of that class, passing any dependencies
 it might have into it. Then, we would replace our timer creation code with code that calls this new class:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span class="nv">$timer</span> <span class="o">=</span> <span class="nx">\Config\Services</span><span class="o">::</span><span class="na">timer</span><span class="p">();</span>
 </pre></div>
@@ -498,7 +498,7 @@ the path it uses:</p>
 is created. This is easily handled with the <tt class="docutils literal"><span class="pre">getSharedInstance()</span></tt> method that is called from within the
 factory method. This handles checking if an instance has been created and saved
 within the class, and, if not, creates a new one. All of the factory methods provide a
-<tt class="docutils literal"><span class="pre">$getShared</span> <span class="pre">=</span> <span class="pre">false</span></tt> value as the last parameter. You should stick to the method also:</p>
+<tt class="docutils literal"><span class="pre">$getShared</span> <span class="pre">=</span> <span class="pre">true</span></tt> value as the last parameter. You should stick to the method also:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Services</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">routes</span><span class="p">(</span><span class="nv">$getShared</span> <span class="o">=</span> <span class="k">false</span><span class="p">)</span>
@@ -536,7 +536,7 @@ within the class, and, if not, creates a new one. All of the factory methods pro
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-       Last updated on Dec 14, 2016.
+       Last updated on Dec 27, 2016.
     </p>
   </div>
 
