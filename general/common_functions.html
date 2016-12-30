@@ -107,6 +107,7 @@
 <li class="toctree-l2"><a class="reference internal" href="debugging.html">Debugging Your Application</a></li>
 <li class="toctree-l2"><a class="reference internal" href="caching.html">Web Page Caching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html">Running via the CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli_commands.html">Custom CLI Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html">Code Modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="managing_apps.html">Managing your Applications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="environments.html">Handling Multiple Environments</a></li>
@@ -277,6 +278,7 @@
 <li class="toctree-l2"><a class="reference internal" href="debugging.html">Debugging Your Application</a></li>
 <li class="toctree-l2"><a class="reference internal" href="caching.html">Web Page Caching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html">Running via the CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli_commands.html">Custom CLI Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html">Code Modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="managing_apps.html">Managing your Applications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="environments.html">Handling Multiple Environments</a></li>
@@ -822,7 +824,9 @@ combination. Will take parameters into effect, if provided.</p>
 </tr>
 </tbody>
 </table>
-<p>Provides easy access to any of the <a class="reference internal" href="../concepts/services.html"><em>Services</em></a> defined in the system.</p>
+<p>Provides easy access to any of the <a class="reference internal" href="../concepts/services.html"><em>Services</em></a> defined in the system.
+This will always return a shared instance of the class, so no matter how many times this is called
+during a single request, only one class instance will be created.</p>
 <p>Example:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span class="nv">$logger</span> <span class="o">=</span> <span class="nx">service</span><span class="p">(</span><span class="s1">&#39;logger&#39;</span><span class="p">);</span>
 <span class="nv">$renderer</span> <span class="o">=</span> <span class="nx">service</span><span class="p">(</span><span class="s1">&#39;renderer&#39;</span><span class="p">,</span> <span class="nx">APPPATH</span><span class="o">.</span><span class="s1">&#39;views/&#39;</span><span class="p">);</span>
@@ -831,8 +835,8 @@ combination. Will take parameters into effect, if provided.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="shared_service">
-<tt class="descname">shared_service</tt><big>(</big><em>$name</em><span class="optional">[</span>, <em>...$params</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#shared_service" title="Permalink to this definition">¶</a></dt>
+<dt id="single_service">
+<tt class="descname">single_service</tt><big>(</big><em>$name</em><span class="optional">[</span>, <em>...$params</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#single_service" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -852,7 +856,7 @@ combination. Will take parameters into effect, if provided.</p>
 </tbody>
 </table>
 <p>Identical to the <strong>service()</strong> function described above, except that all calls to this
-function will share the same instance of the service, where <strong>service</strong> returns a new
+function will return a new instance of the class, where <strong>service</strong> returns the same
 instance every time.</p>
 </dd></dl>
 
@@ -991,7 +995,7 @@ instance every time.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-       Last updated on Dec 14, 2016.
+       Last updated on Dec 30, 2016.
     </p>
   </div>
 

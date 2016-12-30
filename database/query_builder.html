@@ -107,6 +107,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../general/debugging.html">Debugging Your Application</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../general/caching.html">Web Page Caching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../general/cli.html">Running via the CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../general/cli_commands.html">Custom CLI Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../general/modules.html">Code Modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../general/managing_apps.html">Managing your Applications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../general/environments.html">Handling Multiple Environments</a></li>
@@ -277,6 +278,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../general/debugging.html">Debugging Your Application</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../general/caching.html">Web Page Caching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../general/cli.html">Running via the CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../general/cli_commands.html">Custom CLI Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../general/modules.html">Code Modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../general/managing_apps.html">Managing your Applications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../general/environments.html">Handling Multiple Environments</a></li>
@@ -852,8 +854,8 @@ will default to ASC instead.</p>
 </pre></div>
 </div>
 <p><strong>$builder-&gt;countAllResults()</strong></p>
-<p>Permits you to determine the number of rows in a particular Active
-Record query. Queries will accept Query Builder restrictors such as
+<p>Permits you to determine the number of rows in a particular Query
+Builder query. Queries will accept Query Builder restrictors such as
 <tt class="docutils literal"><span class="pre">where()</span></tt>, <tt class="docutils literal"><span class="pre">orWhere()</span></tt>, <tt class="docutils literal"><span class="pre">like()</span></tt>, <tt class="docutils literal"><span class="pre">orLike()</span></tt>, etc. Example:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span class="k">echo</span> <span class="nv">$builder</span><span class="o">-&gt;</span><span class="na">countAllResults</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">);</span>  <span class="c1">// Produces an integer, like 25</span>
 <span class="nv">$builder</span><span class="o">-&gt;</span><span class="na">like</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;match&#39;</span><span class="p">);</span>
@@ -939,8 +941,7 @@ function. Here is an example using an array:</p>
 <span class="c1">// Produces: INSERT INTO mytable (title, content, date) VALUES (&#39;My Title&#39;, &#39;My Content&#39;, &#39;My Date&#39;)</span>
 </pre></div>
 </div>
-<p>The first parameter will contain the table name, the second is an
-object.</p>
+<p>The first parameter is an object.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">All values are escaped automatically producing safer queries.</p>
@@ -1200,9 +1201,9 @@ that it produces an UPDATE SQL string instead of an INSERT SQL string.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span class="nv">$builder</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;id&#39;</span> <span class="o">=&gt;</span> <span class="nv">$id</span><span class="p">));</span>  <span class="c1">// Produces: // DELETE FROM mytable  // WHERE id = $id</span>
 </pre></div>
 </div>
-<p>The first parameter is the table name, the second is the where clause.
+<p>The first parameter is the where clause.
 You can also use the where() or or_where() functions instead of passing
-the data to the second parameter of the function:</p>
+the data to the first parameter of the function:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span class="nv">$builder</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nv">$id</span><span class="p">);</span>
 <span class="nv">$builder</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
 
@@ -2477,7 +2478,7 @@ a DELETE statement will be used instead.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-       Last updated on Dec 14, 2016.
+       Last updated on Dec 30, 2016.
     </p>
   </div>
 

@@ -941,7 +941,7 @@ following configuration values shared by the <a class="reference internal" href=
 <p class="first admonition-title">Note</p>
 <p class="last">The &#8216;cookieHTTPOnly&#8217; setting doesn&#8217;t have an effect on sessions.
 Instead the HttpOnly parameter is always enabled, for security
-reasons. Additionaly, the &#8216;cookiePrefix&#8217; setting is completely
+reasons. Additionally, the &#8216;cookiePrefix&#8217; setting is completely
 ignored.</p>
 </div>
 </div>
@@ -1016,19 +1016,17 @@ an application - it is just another table in your database.</p>
 <p>However, there are some conditions that must be met:</p>
 <blockquote>
 <div><ul class="simple">
-<li>Only your <strong>default</strong> database connection (or the one that you access
-as <tt class="docutils literal"><span class="pre">$this-&gt;db</span></tt> from your controllers) can be used.</li>
 <li>You can NOT use a persistent connection.</li>
 <li>You can NOT use a connection with the <em>cacheOn</em> setting enabled.</li>
 </ul>
 </div></blockquote>
 <p>In order to use the &#8216;database&#8217; session driver, you must also create this
 table that we already mentioned and then set it as your
-<tt class="docutils literal"><span class="pre">$config['sessionSavePath']</span></tt> value.
+<tt class="docutils literal"><span class="pre">$sessionSavePath</span></tt> value.
 For example, if you would like to use &#8216;ci_sessions&#8217; as your table name,
 you would do this:</p>
-<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sessionDriver&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;database&#39;</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sessionSavePath&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ci_sessions&#39;</span><span class="p">;</span>
+<div class="highlight-ci"><div class="highlight"><pre><span class="k">public</span> <span class="nv">$sessionDriver</span> <span class="o">=</span> <span class="s1">&#39;database&#39;</span><span class="p">;</span>
+<span class="k">public</span> <span class="nv">$sessionSavePath</span> <span class="o">=</span> <span class="s1">&#39;ci_sessions&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>And then of course, create the database table ...</p>
@@ -1065,6 +1063,11 @@ setting</strong>. The examples below work both on MySQL and PostgreSQL:</p>
 <span class="nx">ALTER</span> <span class="nx">TABLE</span> <span class="nx">ci_sessions</span> <span class="nx">DROP</span> <span class="nx">PRIMARY</span> <span class="nx">KEY</span><span class="p">;</span>
 </pre></div>
 </div>
+<p>You can choose the Database group to use by adding a new line to the
+<strong>applicationConfigApp.php</strong> file with the name of the group to use:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="k">public</span> <span class="nv">$sessionDBGroup</span> <span class="o">=</span> <span class="s1">&#39;groupName&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p class="last">Only MySQL and PostgreSQL databases are officially
@@ -1073,8 +1076,7 @@ platforms. Using sessions without locks can cause all sorts of
 problems, especially with heavy usage of AJAX, and we will not
 support such cases. Use <tt class="docutils literal"><span class="pre">session_write_close()</span></tt> after you&#8217;ve
 done processing session data if you&#8217;re having performance
-issues.
-NOT SURE HOW THIS IS DONE IN CI4.</p>
+issues.</p>
 </div>
 </div>
 <div class="section" id="redis-driver">
@@ -1096,7 +1098,7 @@ Chances are, you&#8217;re only be using the Redis driver only if you&#8217;re al
 both familiar with Redis and using it for other purposes.</p>
 <p>Just as with the &#8216;files&#8217; and &#8216;database&#8217; drivers, you must also configure
 the storage location for your sessions via the
-<tt class="docutils literal"><span class="pre">$config['sessionSavePath']</span></tt> setting.
+<tt class="docutils literal"><span class="pre">$sessionSavePath</span></tt> setting.
 The format here is a bit different and complicated at the same time. It is
 best explained by the <em>phpredis</em> extension&#8217;s README file, so we&#8217;ll simply
 link you to it:</p>
@@ -1110,8 +1112,8 @@ the link above.</p>
 </div>
 <p>For the most common case however, a simple <tt class="docutils literal"><span class="pre">host:port</span></tt> pair should be
 sufficient:</p>
-<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sessionDiver&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;redis&#39;</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sessionSavePath&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;tcp://localhost:6379&#39;</span><span class="p">;</span>
+<div class="highlight-ci"><div class="highlight"><pre><span class="k">public</span> <span class="nv">$sessionDiver</span> <span class="o">=</span> <span class="s1">&#39;redis&#39;</span><span class="p">;</span>
+<span class="k">public</span> <span class="nv">$sessionSavePath</span> <span class="o">=</span> <span class="s1">&#39;tcp://localhost:6379&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
@@ -1125,7 +1127,7 @@ up to 300 seconds.</p>
 </div>
 <p>The &#8216;MemcachedHandler&#8217; driver is very similar to the &#8216;redis&#8217; one in all of its
 properties, except perhaps for availability, because PHP&#8217;s <a class="reference external" href="http://php.net/memcached">Memcached</a> extension is distributed via PECL and some
-Linux distrubutions make it available as an easy to install package.</p>
+Linux distributions make it available as an easy to install package.</p>
 <p>Other than that, and without any intentional bias towards Redis, there&#8217;s
 not much different to be said about Memcached - it is also a popular
 product that is usually used for caching and famed for its speed.</p>
@@ -1134,10 +1136,10 @@ is that setting value X to expire after Y seconds will result in it being
 deleted after Y seconds have passed (but not necessarily that it won&#8217;t
 expire earlier than that time). This happens very rarely, but should be
 considered as it may result in loss of sessions.</p>
-<p>The <tt class="docutils literal"><span class="pre">$config['sessionSavePath']</span></tt> format is fairly straightforward here,
+<p>The <tt class="docutils literal"><span class="pre">$sessionSavePath</span></tt> format is fairly straightforward here,
 being just a <tt class="docutils literal"><span class="pre">host:port</span></tt> pair:</p>
-<div class="highlight-ci"><div class="highlight"><pre><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sessionDriver&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;memcached&#39;</span><span class="p">;</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sessionSavePath&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;localhost:11211&#39;</span><span class="p">;</span>
+<div class="highlight-ci"><div class="highlight"><pre><span class="k">public</span> <span class="nv">$sessionDriver</span> <span class="o">=</span> <span class="s1">&#39;memcached&#39;</span><span class="p">;</span>
+<span class="k">public</span> <span class="nv">$sessionSavePath</span> <span class="o">=</span> <span class="s1">&#39;localhost:11211&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <div class="section" id="id1">
@@ -1149,7 +1151,7 @@ to note that we haven&#8217;t tested if that is reliable.</p>
 separate the multiple server paths with commas:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span class="c1">// localhost will be given higher priority (5) here,</span>
 <span class="c1">// compared to 192.0.2.1 with a weight of 1.</span>
-<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sessionSavePath&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;localhost:11211:5,192.0.2.1:11211:1&#39;</span><span class="p">;</span>
+<span class="k">public</span> <span class="nv">$sessionSavePath</span> <span class="o">=</span> <span class="s1">&#39;localhost:11211:5,192.0.2.1:11211:1&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
@@ -1177,7 +1179,7 @@ separate the multiple server paths with commas:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-       Last updated on Dec 28, 2016.
+       Last updated on Dec 30, 2016.
     </p>
   </div>
 
