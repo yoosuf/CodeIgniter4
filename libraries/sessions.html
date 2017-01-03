@@ -1068,6 +1068,14 @@ setting</strong>. The examples below work both on MySQL and PostgreSQL:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span class="k">public</span> <span class="nv">$sessionDBGroup</span> <span class="o">=</span> <span class="s1">&#39;groupName&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
+<p>If you&#8217;d rather not do all of this by hand, you can use the <tt class="docutils literal"><span class="pre">session:migration</span></tt> command
+from the cli to generate a migration file for you:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span class="o">&gt;</span> <span class="nx">php</span> <span class="nx">ci</span><span class="o">.</span><span class="nx">php</span> <span class="nx">session</span><span class="o">:</span><span class="nx">migration</span>
+<span class="o">&gt;</span> <span class="nx">php</span> <span class="nx">ci</span><span class="o">.</span><span class="nx">php</span> <span class="nx">migrate</span>
+</pre></div>
+</div>
+<p>This command will take the <strong>sessionSavePath</strong> and <strong>sessionMatchIP</strong> settings into account
+when it generates the code.</p>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p class="last">Only MySQL and PostgreSQL databases are officially
@@ -1178,8 +1186,8 @@ separate the multiple server paths with commas:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-       Last updated on Dec 30, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+       Last updated on Jan 03, 2017.
     </p>
   </div>
 
