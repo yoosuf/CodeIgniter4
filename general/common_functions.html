@@ -168,6 +168,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../helpers/html_helper.html">HTML Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/inflector_helper.html">Inflector Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/number_helper.html">Number Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/security_helper.html">Security Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/text_helper.html">Text Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/url_helper.html">URL Helper</a></li>
 </ul>
@@ -340,6 +341,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../helpers/html_helper.html">HTML Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/inflector_helper.html">Inflector Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/number_helper.html">Number Helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers/security_helper.html">Security Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/text_helper.html">Text Helper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../helpers/url_helper.html">URL Helper</a></li>
 </ul>
@@ -756,6 +758,30 @@ as a traditional redirect and pass the string in, letting
 </dd></dl>
 
 <dl class="function">
+<dt id="redirect_with_input">
+<tt class="descname">redirect_with_input</tt><big>(</big><em>$uri</em><span class="optional">[</span>, <em>...$params</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#redirect_with_input" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>$uri</strong> (<em>string</em>) &#8211; The URI to redirect the user to.</li>
+<li><strong>$params</strong> (<em>mixed</em>) &#8211; one or more additional parameters that can be used with the <tt class="xref py py-meth docutils literal"><span class="pre">RouteCollection::reverseRoute()</span></tt> method.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Identical to the <tt class="docutils literal"><span class="pre">redirect()</span></tt> method, except this flashes the request&#8217;s $_GET and $_POST values to the session.
+On the next page request, the form helper <tt class="docutils literal"><span class="pre">set_*</span></tt> methods will check for data within the old input first, then,
+if it&#8217;s not found, the current GET/POST will be checked.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In order to retrieve the old, the session MUST be started prior to calling the function.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
 <dt id="remove_invisible_characters">
 <tt class="descname">remove_invisible_characters</tt><big>(</big><em>$str</em><span class="optional">[</span>, <em>$url_encoded = TRUE</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#remove_invisible_characters" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
@@ -997,7 +1023,7 @@ instance every time.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
-       Last updated on Jan 03, 2017.
+       Last updated on Jan 09, 2017.
     </p>
   </div>
 
