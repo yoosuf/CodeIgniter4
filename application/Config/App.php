@@ -21,7 +21,7 @@ class App extends BaseConfig
 	| environments.
 	|
 	*/
-	public $baseURL = '';
+	public $baseURL = getenv('APP_HOST', '');
 
 	/*
 	|--------------------------------------------------------------------------
@@ -50,7 +50,7 @@ class App extends BaseConfig
 	|
 	| WARNING: If you set this to 'PATH_INFO', URIs will always be URL-decoded!
 	*/
-	public $uriProtocol = 'REQUEST_URI';
+	public $uriProtocol = getenv('APP_URI_PROTOCOL', 'REQUEST_URI');
 
 	/*
 	|--------------------------------------------------------------------------
@@ -63,7 +63,7 @@ class App extends BaseConfig
 	| should run under for this request.
 	|
 	*/
-	public $defaultLocale = 'en';
+	public $defaultLocale = getenv('APP_LANG', 'en');
 
 	/*
 	|--------------------------------------------------------------------------
@@ -99,7 +99,7 @@ class App extends BaseConfig
 	| dates with the date helper, and can be retrieved through the app_timezone()
 	|
 	*/
-	public $appTimezone = 'America/Chicago';
+	public $appTimezone = getenv('APP_TIMEZONE', 'America/Chicago');
 
     /*
     |--------------------------------------------------------------------------
@@ -322,7 +322,7 @@ class App extends BaseConfig
 	| If you use the Encryption class you must set
 	| an encryption key. See the user guide for more info.
 	*/
-	public $encryptionKey = '';
+	public $encryptionKey = getenv('APP_KEY');
 
 	/*
 	|--------------------------------------------------------------------------
@@ -336,7 +336,7 @@ class App extends BaseConfig
 	|
 	| If you use the Model class' hashedID methods, this must be filled out.
 	*/
-	public $salt = '';
+	public $salt = getenv('APP_SALT');
 
 	//--------------------------------------------------------------------
 

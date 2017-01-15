@@ -1,5 +1,6 @@
 <?php
 
+
 // Set default timezone on the server
 // Defaults to UTC to make time conversions work well
 date_default_timezone_set('UTC');
